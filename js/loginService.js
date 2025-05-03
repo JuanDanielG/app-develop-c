@@ -37,7 +37,7 @@ function login(email, password) {
         })
         .then((result) => {
             if (result.status === 200) {
-                alertType = 'succcess'
+                alertType = 'success'
                 message = '¡Inicio de sesión Exitoso!'
                 alertBuilder(alertType, message)
             }
