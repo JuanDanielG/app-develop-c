@@ -26,7 +26,7 @@ function login(email, password){
         body: JSON.stringify({email, password})
     })
     .then((response)=>{
-        return response.json.then(
+        return response.json().then(
             data =>{
                 return{
                     status: response.status,
@@ -35,28 +35,24 @@ function login(email, password){
             }
         )
     })
-
-    // Verificamos si el email o la contraseña están vacíos.
-    if(email === '' || password === ''){
-        alertType = 'warning'
-        message = 'Complete todos los datos'
-    }
-
-    // Si el email y la contraseña coinciden con los valores predeterminados.
-    else if(email === 'prueba@gmail.com' && password === '123456'){
-        alertType = 'success'
-        message = '¡Inicio de sesión exitoso!'
-    }
-
-    // Si los datos no coinciden con los valores esperados.
-    else{
+    .then((result)=>{
+        if(result.status === 200){
+            alertType = 'succcess'
+            message = '¡Inicio de sesión Exitoso!'
+            alertBuilder(alertType,message)
+        }
+        else{
+            alertType = 'danger'
+            message = 'Error inesperado'
+            alertBuilder(alertType,message)
+        }
+       
+    })
+    .catch((error)=>{
         alertType = 'danger'
-        message = 'Correo o Contraseña incorrectos.'
-    }
-
-    // Llamamos a la función 'alertBuilder' para mostrar la alerta con el tipo y el mensaje adecuado.
-    alertBuilder(alertType, message)
-}
+        message = 'Error inesperado'+error
+        alertBuilder(alertType,message)
+    })
 
 
 // Función para generar una alerta HTML personalizada y mostrarla en la página.
@@ -70,4 +66,4 @@ function alertBuilder (alertType, message){
 `
     // Insertamos el HTML generado en el contenedor con id 'alert'.
 document.getElementById('alert').innerHTML = alert
-}
+}}
